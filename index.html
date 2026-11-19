@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail Menu - Hanioti Garden</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(165deg, #fdfbf7 0%, #f8f6f2 40%, #faf8f4 60%, #fcfaf6 100%);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Decorative background elements */
+        .bg-shape-1 {
+            position: fixed;
+            top: -5%;
+            right: -5%;
+            width: 25%;
+            padding-bottom: 25%;
+            background: radial-gradient(circle, rgba(255, 183, 77, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-shape-2 {
+            position: fixed;
+            bottom: 10%;
+            left: -5%;
+            width: 20%;
+            padding-bottom: 20%;
+            background: radial-gradient(circle, rgba(79, 195, 247, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-shape-3 {
+            position: fixed;
+            top: 50%;
+            right: -3%;
+            width: 15%;
+            height: 30%;
+            background: linear-gradient(180deg, rgba(52, 168, 83, 0.03) 0%, transparent 100%);
+            border-radius: 50%;
+            transform: translateY(-50%) rotate(20deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .header-left {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .location-tag {
+            display: inline-flex;
+            align-items: center;
+            border: 2.5px solid #1a4d3c;
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 500;
+            color: #1a4d3c;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 85px);
+            font-weight: 700;
+            color: #1a4d3c;
+            line-height: 1;
+            letter-spacing: -2px;
+            white-space: nowrap;
+        }
+        
+        /* Glass illustration */
+        .header-glass {
+            width: clamp(100px, 15vw, 130px);
+            height: clamp(100px, 15vw, 130px);
+            filter: drop-shadow(0 4px 8px rgba(26, 77, 60, 0.1));
+            flex-shrink: 0;
+        }
+        
+        /* Decorative divider */
+        .header-divider {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #1a4d3c 0%, rgba(26, 77, 60, 0.3) 50%, #1a4d3c 100%);
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .header-divider::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #ffb74d;
+            border-radius: 50%;
+            border: 2px solid #1a4d3c;
+        }
+        
+        /* Spirit sections */
+        .spirits-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+        
+        .spirit-section {
+            position: relative;
+        }
+        
+        .spirit-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1.5rem;
+        }
+        
+        .spirit-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 42px);
+            font-weight: 700;
+            color: #1a4d3c;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        
+        .spirit-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, rgba(26, 77, 60, 0.4), transparent);
+        }
+        
+        /* Cocktails grid */
+        .cocktails-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .cocktails-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .cocktails-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .cocktail {
+            position: relative;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(26, 77, 60, 0.15);
+            border-radius: 16px;
+            padding: 1.75rem 2rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .cocktail:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(26, 77, 60, 0.1);
+            border-color: rgba(26, 77, 60, 0.25);
+        }
+        
+        .cocktail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #1a4d3c, #34a853);
+            border-radius: 16px 16px 0 0;
+            opacity: 0.6;
+        }
+        
+        .cocktail-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 600;
+            color: #1a4d3c;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+        
+        .cocktail-description {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(18px, 2.5vw, 26px);
+            color: #2d2d2d;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        /* Decorative corner elements */
+        .corner-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .corner-top-left {
+            top: 2rem;
+            left: 2rem;
+            border-top: 3px solid rgba(26, 77, 60, 0.2);
+            border-left: 3px solid rgba(26, 77, 60, 0.2);
+            border-radius: 8px 0 0 0;
+        }
+        
+        .corner-bottom-right {
+            bottom: 2rem;
+            right: 2rem;
+            border-bottom: 3px solid rgba(26, 77, 60, 0.2);
+            border-right: 3px solid rgba(26, 77, 60, 0.2);
+            border-radius: 0 0 8px 0;
+        }
+        
+        /* SVG styling */
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-glass {
+                align-self: flex-end;
+            }
+            
+            .title {
+                white-space: normal;
+            }
+            
+            .corner-decoration {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .corner-top-left,
+            .corner-bottom-right {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape-1"></div>
+    <div class="bg-shape-2"></div>
+    <div class="bg-shape-3"></div>
+    
+    <div class="corner-decoration corner-top-left"></div>
+    <div class="corner-decoration corner-bottom-right"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <div class="location-tag">Hanioti Garden</div>
+                <h1 class="title">Cocktail Menu</h1>
+            </div>
+            
+            <div class="header-glass">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Decorative cocktail glass">
+                    <defs>
+                        <linearGradient id="glassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1a4d3c;stop-opacity:0.2" />
+                            <stop offset="100%" style="stop-color:#1a4d3c;stop-opacity:0.05" />
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="100" cy="70" rx="70" ry="15" fill="url(#glassGradient)" stroke="#1a4d3c" stroke-width="3"/>
+                    <path d="M 30 70 Q 40 110, 95 140 L 95 170 L 70 170 L 70 175 L 130 175 L 130 170 L 105 170 L 105 140 Q 160 110, 170 70" 
+                          fill="none" stroke="#1a4d3c" stroke-width="3"/>
+                    <ellipse cx="100" cy="70" rx="65" ry="12" fill="#1a4d3c" opacity="0.12"/>
+                    <ellipse cx="110" cy="55" rx="15" ry="8" fill="#34a853" transform="rotate(-20 110 55)"/>
+                    <ellipse cx="125" cy="60" rx="12" ry="7" fill="#34a853" transform="rotate(-30 125 60)"/>
+                    <ellipse cx="115" cy="65" rx="10" ry="6" fill="#34a853" transform="rotate(-15 115 65)"/>
+                    <circle cx="80" cy="65" r="3" fill="none" stroke="#1a4d3c" stroke-width="1.5" opacity="0.4"/>
+                    <circle cx="90" cy="72" r="2.5" fill="none" stroke="#1a4d3c" stroke-width="1.5" opacity="0.4"/>
+                    <circle cx="120" cy="68" r="2" fill="none" stroke="#1a4d3c" stroke-width="1.5" opacity="0.4"/>
+                </svg>
+            </div>
+        </header>
+        
+        <div class="header-divider"></div>
+        
+        <main class="spirits-container">
+            <!-- GIN SECTION -->
+            <section class="spirit-section">
+                <div class="spirit-header">
+                    <h2 class="spirit-title">Gin</h2>
+                    <div class="spirit-line"></div>
+                </div>
+                <div class="cocktails-grid">
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Southside</h3>
+                        <p class="cocktail-description">Gin, Lemon, Syrup, Mint</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Fitzgerald</h3>
+                        <p class="cocktail-description">Gin, Lemon, Syrup, Bitters</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Delilah</h3>
+                        <p class="cocktail-description">Gin, Cointreau, Lemon, Syrup</p>
+                    </article>
+                </div>
+            </section>
+            
+            <!-- RUM SECTION -->
+            <section class="spirit-section">
+                <div class="spirit-header">
+                    <h2 class="spirit-title">Rum</h2>
+                    <div class="spirit-line"></div>
+                </div>
+                <div class="cocktails-grid">
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Mai Tai</h3>
+                        <p class="cocktail-description">Rum, Cointreau, Lime, Orgeat, Syrup</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Mojito</h3>
+                        <p class="cocktail-description">Rum, Lime, Sugar, Mint, Soda</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Caipirinha</h3>
+                        <p class="cocktail-description">Cachaça, Lime, Sugar</p>
+                    </article>
+                </div>
+            </section>
+            
+            <!-- TEQUILA SECTION -->
+            <section class="spirit-section">
+                <div class="spirit-header">
+                    <h2 class="spirit-title">Tequila</h2>
+                    <div class="spirit-line"></div>
+                </div>
+                <div class="cocktails-grid">
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Paloma</h3>
+                        <p class="cocktail-description">Tequila, Lime, Agave, Salt, Pink Grapefruit Soda</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Tommy's Margarita</h3>
+                        <p class="cocktail-description">Tequila, Lime, Agave</p>
+                    </article>
+                    <article class="cocktail">
+                        <h3 class="cocktail-name">Infante</h3>
+                        <p class="cocktail-description">Tequila, Lime, Orgeat</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
